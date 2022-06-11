@@ -41,7 +41,6 @@ function App() {
 
     promise.then((d) => {
       setItems(d);
-      console.log(d);
       const final = d.reduce((acc, curr) => {
         for (const k of Object.keys(curr)) {
           if (!Object.keys(acc).includes(k)) {
@@ -58,18 +57,19 @@ function App() {
 
   return (
     <div className="main">
+      <div className ="Navbar">
+        <Link to="/">home</Link>
+        <Link to="/dnd">dnd</Link>
+        <Link to="/viz">viz</Link>
+      </div>
       <input
         type="file"
+        className="inputField"
         onChange={(e) => {
           const file = e.target.files[0];
           readExcel(file);
         }}
       />
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <Link to="/">home</Link>
-        <Link to="/dnd">dnd</Link>
-        <Link to="/viz">viz</Link>
-      </div>
       <Routes>
         <Route
           path="/"

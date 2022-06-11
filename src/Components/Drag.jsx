@@ -15,8 +15,8 @@ export const Drag = ({ headers, dropTableData }) => {
       }
     }
     setdroppedTableToshow(neobj);
+  }, [dropped]);
 
-  },[dropped])
   const handleEnd = (result) => {
     const { destination, source } = result;
     if (!destination) {
@@ -59,6 +59,23 @@ export const Drag = ({ headers, dropTableData }) => {
               {...provided.droppableProps}
             >
               <h4>Available content to drag</h4>
+              <div className="flex">
+                <div
+                  className="all-file"
+                  onClick={() => setdroppedTableToshow(dropTableData)}
+                >
+                  ALL Files
+                </div>
+                <div
+                  className="all-file"
+                  onClick={() => {
+                    setdroppedTableToshow({});
+                    setDropped([]);
+                  }}
+                >
+                  Clear
+                </div>
+              </div>
               {headers?.map((header, index) => {
                 return (
                   <Draggable draggableId={header} index={index} key={index}>
@@ -90,7 +107,7 @@ export const Drag = ({ headers, dropTableData }) => {
               {Object.keys(droppedTableToshow).map((head, index) => {
                 return (
                   <tbody>
-                    <thead style={{ backgroundColor: "skyblue" }} key={index}>
+                    <thead className="dropped-head" key={index}>
                       {head}
                     </thead>
                     {droppedTableToshow[head].map((val) => (
@@ -109,4 +126,3 @@ export const Drag = ({ headers, dropTableData }) => {
     </DragDropContext>
   );
 };
-

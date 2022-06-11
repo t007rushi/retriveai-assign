@@ -6,7 +6,12 @@ td {
   padding: 5px;
 }
 th {
-  background-color: #96d4d4;
+  background-color: rgb(2,96,171);
+  color:white;
+}
+
+.inputField{
+  margin:1rem;
 }
 
 .main {
@@ -26,9 +31,10 @@ th {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
+  border-radius:10px;
+  border:1px solid grey;
   background-color: orange;
-  padding: 5px;
+  padding: 10px;
   gap:5px;
   height:fit-content;
 }
@@ -36,7 +42,14 @@ th {
 .dragItems {
   background-color: yellow;
   width: 100%;
-  padding: 1px;
+  padding: 3px;
+  border-radius:10px;
+  text-align: center;
+}
+
+.dragItems:hover {
+  box-shadow: 0 0 5px black;
+transform:scale(1.03);
 }
 
 .right{
@@ -44,4 +57,47 @@ th {
   background-color: white;
   align-items: flex-start;
   gap:1px;
+}
+
+.dropped-head{
+  background-color: rgb(2,96,171);
+  color:white;
+  padding:5px;
+}
+
+.chart{
+  width:45rem;
+}
+
+.pie{
+  width:30rem;
+}
+
+.all-file{
+  cursor: pointer;
+  background-color:pink;
+  padding : 5px;
+  border-radius:10px;
+}
+
+.flex{
+  display: flex;
+  gap:1rem;
+}
+
+.Navbar{
+  background-color:rgb(40,40,40);
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  padding:5px;
+  margin-bottom:1rem;
+}
+
+.Navbar *{
+color:white;
+text-decoration:none;
+font-weight:bold;
+font-size:1.5rem;
+margin:10px;
 }

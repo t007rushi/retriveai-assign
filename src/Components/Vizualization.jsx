@@ -1,51 +1,80 @@
-import React from "react";
-import { Bar } from "react-chartjs-2";
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-  } from "chart.js";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
+import { DraggableComp } from "./DraggableComp";
+import { ChartComp } from "./ChartComp";
+import { DroppableComp } from "./DroppableComp";
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
+export const Vizualization = ({ dropTableData, headers }) => {
+  const [dropped, setDropped] = useState([]);
+  const [droppedTableToshow, setdroppedTableToshow] = useState({});
+  const [chartType, setChartType] = useState("bar");
+  useEffect(() => {
+    var neobj = { ...droppedTableToshow };
+    for (const d of Object.keys(dropTableData)) {
+      if (dropped.includes(d)) {
+        neobj = { ...neobj, [d]: dropTableData[d] };
+      }
+    }
+    setdroppedTableToshow(neobj);
+  }, [dropped]);
+
+  const handleEnd = (result) => {
+    const { destination, source } = result;
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    let add;
+    let active = headers;
+    let complete = dropped;
+    // Source Logic
+    if (source.droppableId === "headerDrops") {
+      add = active[source.index];
+    } else {
+      add = complete[source.index];
+      complete.splice(source.index, 1);
+    }
+
+    // Destination Logic
+    if (destination.droppableId === "headerDrops2") {
+      complete.splice(destination.index, 0, add);
+    }
+    setDropped([...complete]);
+  };
+
+  const clear = () => {
+    setdroppedTableToshow({});
+    setDropped([]);
+  };
+
+  const handleChange = (e) => {
+    setChartType(e.target.value);
+  };
+  return (
+    <DragDropContext onDragEnd={handleEnd}>
+      <select name="options" id="options" onChange={(e) => handleChange(e)}>
+        <option value="bar">Chart</option>
+        <option value="line">LineChart</option>
+        <option value="pie">PieChart</option>
+      </select>
+      <div className="drag-drop">
+        <DraggableComp headers={headers} clear={clear} />
+        <DroppableComp droppedTableToshow={droppedTableToshow}>
+          <ChartComp
+            dropTableData={dropTableData}
+            droppedTableToshow={droppedTableToshow}
+            chartType={chartType}
+          />
+        </DroppableComp>
+      </div>
+    </DragDropContext>
   );
-   
-
-export const Vizualization = ({dropTableData}) => {
-  console.log(dropTableData)
-  return <div>
-      Vizualization
-      <Bar options={{
-      responsive: true,
-      plugins: {
-        legend: {
-          position: "top",
-        },
-        title: {
-          display: true,
-          text: "Whom'st let the dogs out",
-        },
-      },
-    }} data={{
-        labels: dropTableData?.Name?.slice(1,5),
-        datasets: [
-          {
-            label: "Whom'st let the dogs out",
-            data: dropTableData?.OrderQty?.slice(1,5),
-            borderColor: "rgb(53, 162, 235)",
-            backgroundColor: "rgba(53, 162, 235, 0.4)",
-          },
-        ],
-      }} />
-      </div>;
 };
-
